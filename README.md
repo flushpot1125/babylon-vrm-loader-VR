@@ -5,12 +5,12 @@ Great thanks for [il-m-yamagishi](https://github.com/il-m-yamagishi).
 
 # Set vrm model
 
-(1) set vrm model in "./vrm"
+(1) set vrm model in "test/vrm"
 
 (2) modify your code in "src/test/index.ts"
 
 ```js
- await SceneLoader.AppendAsync('./', 'filename.vrm', scene);
+ await SceneLoader.AppendAsync('./vrm/', 'filename.vrm', scene);
 ```
 
 # build
