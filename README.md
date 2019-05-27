@@ -33,3 +33,18 @@ $ yarn build
 ```bash
 $ yarn debug-lan
 ```
+
+# Reference
+
+### Vita
+
+![vita.jpg](./img/vita.jpg)
+
+https://hub.vroid.com/characters/6193066630030526355/models/3525604181073039892
+
+### Alicia
+
+![alicia.png](./img/alicia.png)
+
+https://3d.nicovideo.jp/works/td32797
+
