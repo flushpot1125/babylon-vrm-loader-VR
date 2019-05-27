@@ -26,6 +26,7 @@ $ npm install --save-dev babylon-mtoon-material
 $ npm install --save-dev webpack-dev-server
 $ npm install --save-dev webpack 
 $ npm install --save-dev webpack-cli
+$ yarn build
 ```
 
 # run
