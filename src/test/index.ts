@@ -81,7 +81,7 @@ async function main() {
     window.addEventListener('resize', () => {
         engine.resize();
     });
-    await SceneLoader.AppendAsync('./', 'filename.vrm', scene);
+    await SceneLoader.AppendAsync('./vrm/', 'vita.vrm', scene);
 
     let fileCount = 0;
     (document.getElementById('file-input') as HTMLInputElement).addEventListener('change', (evt) => {
@@ -97,42 +97,42 @@ async function main() {
             fileCount++;
         });
     });
+    //for VR mode :from
+    const vrHelper = scene.createDefaultVRExperience();
+
+    const leftHand = Mesh.CreateBox("",0.1, scene);
+    leftHand.scaling.z = 2;
+    leftHand.isVisible =false;
+
+    const rightHand = Mesh.CreateBox("",0.1, scene);
+    rightHand.scaling.z = 2;
+    rightHand.isVisible =false;
+
+    scene.onBeforeRenderObservable.add(()=>{
+        if(vrHelper.webVRCamera.leftController){
+            leftHand.position = vrHelper.webVRCamera.leftController.devicePosition.clone();
+            leftHand.rotationQuaternion = vrHelper.webVRCamera.leftController.deviceRotationQuaternion.clone();
+        }
+        if(vrHelper.webVRCamera.rightController){
+            rightHand.position = vrHelper.webVRCamera.rightController.devicePosition.clone();
+            rightHand.rotationQuaternion = vrHelper.webVRCamera.rightController.deviceRotationQuaternion.clone();
+        }
+
+    });
+
+    //exit VR mode for Oculus Go
+    standardMaterialSphere.actionManager = new ActionManager(scene);
+
+    standardMaterialSphere.actionManager.registerAction(
+    new ExecuteCodeAction({
+        trigger: ActionManager.OnPickDownTrigger,},
+        function () { 
+        console.log("clicked the mesh");
+        vrHelper.exitVR();
+        scene.getEngine().exitFullscreen()
+    }));
+    //for VR mode :to
 }
-
-const vrHelper = scene.createDefaultVRExperience();
-
-const leftHand = Mesh.CreateBox("",0.1, scene);
-leftHand.scaling.z = 2;
-leftHand.isVisible =false;
-
-const rightHand = Mesh.CreateBox("",0.1, scene);
-rightHand.scaling.z = 2;
-rightHand.isVisible =false;
-
- scene.onBeforeRenderObservable.add(()=>{
-     if(vrHelper.webVRCamera.leftController){
-         leftHand.position = vrHelper.webVRCamera.leftController.devicePosition.clone();
-         leftHand.rotationQuaternion = vrHelper.webVRCamera.leftController.deviceRotationQuaternion.clone();
-     }
-     if(vrHelper.webVRCamera.rightController){
-         rightHand.position = vrHelper.webVRCamera.rightController.devicePosition.clone();
-         rightHand.rotationQuaternion = vrHelper.webVRCamera.rightController.deviceRotationQuaternion.clone();
-     }
-
- });
-
- //VRモードを終了させる Oculus Go向け
- standardMaterialSphere.actionManager = new ActionManager(scene);
-
- standardMaterialSphere.actionManager.registerAction(
- new ExecuteCodeAction({
-    trigger: ActionManager.OnPickDownTrigger,},
-    function () { 
-     console.log("clicked the mesh");
-     vrHelper.exitVR();
-     scene.getEngine().exitFullscreen()
-   //  function () { vrHelper.exitVR(); }
- }));
 
 interface DebugProperties {
     webgl1: boolean;
