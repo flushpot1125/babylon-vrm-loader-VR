@@ -58,6 +58,7 @@
         "build:gh-pages": "webpack --config webpack.test.config.js",
         "lint": "tslint -p .",
         "debug": "webpack-dev-server --config webpack.test.config.js",
+        "debug-lan": "webpack-dev-server --host 0.0.0.0 --config webpack.test.config.js",
         "release": "semantic-release",
         "release:gh-pages": "gh-pages -d test -u \"Masaru Yamagishi <m-yamagishi@virtualcast.jp>\" -m \"ci(gh-pages): update gh-pages [skip ci]\""
     },

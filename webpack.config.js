@@ -26,4 +26,7 @@ module.exports = {
         /^@babylonjs\/core.*$/,
         /^@babylonjs\/loaders.*$/,
     ],
+    devServer: {
+        disableHostCheck: true
+    }
 };

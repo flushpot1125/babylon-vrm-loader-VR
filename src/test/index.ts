@@ -8,6 +8,7 @@ import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
 import { Vector3 } from '@babylonjs/core/Maths/math';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import { Scene } from '@babylonjs/core/scene';
+import { ActionManager,ExecuteCodeAction} from '@babylonjs/core/Actions';
 
 import '@babylonjs/core/Helpers/sceneHelpers';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
@@ -34,6 +35,7 @@ async function main() {
     camera.wheelDeltaPercentage = 0.01;
     camera.minZ = 0.3;
     camera.position = new Vector3(0, 1.2, -3);
+    camera.position = new Vector3(0, 1.2, -1.1);
     camera.attachControl(canvas, true);
 
     scene.createDefaultEnvironment({
@@ -79,6 +81,8 @@ async function main() {
     window.addEventListener('resize', () => {
         engine.resize();
     });
+    await SceneLoader.AppendAsync('./', 'filename.vrm', scene);
+
     let fileCount = 0;
     (document.getElementById('file-input') as HTMLInputElement).addEventListener('change', (evt) => {
         const file = (evt as any).target.files[0];
@@ -94,6 +98,41 @@ async function main() {
         });
     });
 }
+
+const vrHelper = scene.createDefaultVRExperience();
+
+const leftHand = Mesh.CreateBox("",0.1, scene);
+leftHand.scaling.z = 2;
+leftHand.isVisible =false;
+
+const rightHand = Mesh.CreateBox("",0.1, scene);
+rightHand.scaling.z = 2;
+rightHand.isVisible =false;
+
+ scene.onBeforeRenderObservable.add(()=>{
+     if(vrHelper.webVRCamera.leftController){
+         leftHand.position = vrHelper.webVRCamera.leftController.devicePosition.clone();
+         leftHand.rotationQuaternion = vrHelper.webVRCamera.leftController.deviceRotationQuaternion.clone();
+     }
+     if(vrHelper.webVRCamera.rightController){
+         rightHand.position = vrHelper.webVRCamera.rightController.devicePosition.clone();
+         rightHand.rotationQuaternion = vrHelper.webVRCamera.rightController.deviceRotationQuaternion.clone();
+     }
+
+ });
+
+ //VRモードを終了させる Oculus Go向け
+ standardMaterialSphere.actionManager = new ActionManager(scene);
+
+ standardMaterialSphere.actionManager.registerAction(
+ new ExecuteCodeAction({
+    trigger: ActionManager.OnPickDownTrigger,},
+    function () { 
+     console.log("clicked the mesh");
+     vrHelper.exitVR();
+     scene.getEngine().exitFullscreen()
+   //  function () { vrHelper.exitVR(); }
+ }));
 
 interface DebugProperties {
     webgl1: boolean;
