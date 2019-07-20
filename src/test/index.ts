@@ -68,7 +68,7 @@ async function main() {
     }
 
     await scene.debugLayer.show({
-        globalRoot: document.getElementById('wrapper') as HTMLMainElement,
+        globalRoot: document.getElementById('wrapper') as HTMLElement,
     });
 
     // Expose current scene
