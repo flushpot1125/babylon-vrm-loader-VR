@@ -28,7 +28,9 @@
     ],
     "typings": "dist/index.d.ts",
     "main": "dist/index.js",
-    "dependencies": {},
+    "dependencies": {
+        "npm": "^6.13.4"
+    },
     "devDependencies": {
         "@babylonjs/core": "^4.0.3",
         "@babylonjs/inspector": "^4.0.3",
@@ -43,7 +45,7 @@
         "cz-conventional-changelog": "3.0.1",
         "gh-pages": "^2.0.1",
         "raw-loader": "^3.1.0",
-        "semantic-release": "^15.13.18",
+        "semantic-release": "^15.14.0",
         "ts-lib": "0.0.5",
         "ts-loader": "^6.0.4",
         "tslint": "^5.18.0",
